@@ -48,17 +48,53 @@ def mode(data):
     max_count = max(counts.values())
     return [x for x, count in counts.items() if count == max_count]
 
+# Calculate p-quantiles of a numeric list
+def quantile(data, p):
+    sorted_data = sorted(data)
+    n = len(data)
+    i = p * (n + 1)
+    if i.is_integer():
+        return sorted_data[int(i-1)]
+    else:
+        return sorted_data[int(i)-1] + (sorted_data[int(i)] - sorted_data[int(i)-1]) * (i - int(i))
+
+# Calculate IQRs
+def iqr(data):
+    return quantile(data, 0.75) - quantile(data, 0.25)
+
+def execute_samples(data):
+    print(f'Arithmetic: {Decimal(arithmetic_mean(data))}')
+    print(f'Geometric: {Decimal(geometric_mean(data))}')
+    print(f'Harmonic: {Decimal(harmonic_mean(data))}')
+    print(f'Trimmed 1: {Decimal(trimmed_mean(data, 1))}')
+    print(f'Trimmed 2: {Decimal(trimmed_mean(data, 2))}')
+    print(f'Weighted (1s): {Decimal(weighted_mean(data, [1] * len(data)))}')
+    print(f'Hoelder 2: {Decimal(hoelder_mean(data, 2))}')
+    print(f'Hoelder 1 (arith): {Decimal(hoelder_mean(data, 1))}')
+    print(f'Hoelder -1 (harm): {Decimal(hoelder_mean(data, -1))}')
+    print(f'Median: {Decimal(median(data))}')
+    print(f'Mode: {mode(data)}')
+    print(f'Quantile 0.1: {Decimal(quantile(data, 0.1))}')
+    print(f'Quantile 0.25: {Decimal(quantile(data, 0.25))}')
+    print(f'Quantile 0.5: {Decimal(quantile(data, 0.5))}')
+    print(f'Quantile 0.75: {Decimal(quantile(data, 0.75))}')
+    print(f'Quantile 0.8: {Decimal(quantile(data, 0.8))}')
+    print(f'IQR: {Decimal(iqr(data))}')
+
 # Driver and test code
-data = [1, 2, 3, 4, 5, 6]
-print(f'Arithmetic: {Decimal(arithmetic_mean(data))}')
-print(f'Geometric: {Decimal(geometric_mean(data))}')
-print(f'Harmonic: {Decimal(harmonic_mean(data))}')
-print(f'Trimmed 1: {Decimal(trimmed_mean(data, 1))}')
-print(f'Trimmed 2: {Decimal(trimmed_mean(data, 2))}')
-print(f'Weighted (111111): {Decimal(weighted_mean(data, [1, 1, 1, 1, 1, 1]))}')
-print(f'Weighted (321123): {Decimal(weighted_mean(data, [3, 2, 1, 1, 2, 3]))}')
-print(f'Hoelder 2: {Decimal(hoelder_mean(data, 2))}')
-print(f'Hoelder 1 (arith): {Decimal(hoelder_mean(data, 1))}')
-print(f'Hoelder -1 (harm): {Decimal(hoelder_mean(data, -1))}')
-print(f'Median: {Decimal(median(data))}')
-print(f'Mode: {mode(data)}')
+data = [1, 2, 3, 4, 5, 6,7,8,9,10,11]
+
+data2 = [
+    2.85,  3.19,  3.50,  3.69,  3.90,  4.14,  4.32,  4.50,  4.80,  5.20,
+    2.85,  3.20,  3.54,  3.70, 3.96,  4.16,  4.44,  4.56,  4.80,  5.30,
+    2.98,  3.30,  3.54,  3.70,  4.05,  4.20,  4.47,  4.68,  4.90,  5.43,
+    3.04,  3.39,  3.57,  3.75,  4.08,  4.20,  4.47,  4.70,  5.00,
+    3.10,  3.42,  3.60,  3.78,  4.10,  4.30,  4.47,  4.71,  5.10,
+    3.10,  3.48,  3.60,  3.83,  4.14,  4.30,  4.50,  4.78,  5.10
+]
+
+print('----------- data -----------')
+execute_samples(data)
+
+print('----------- data 2 -----------')
+execute_samples(data2)
