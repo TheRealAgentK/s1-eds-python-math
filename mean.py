@@ -62,6 +62,11 @@ def quantile(data, p):
 def iqr(data):
     return quantile(data, 0.75) - quantile(data, 0.25)
 
+def MAD(data):
+    median_data = median(data)
+    distances = [abs(x_i - median_data) for x_i in data]
+    return median(distances)
+
 def execute_samples(data):
     print(f'Arithmetic: {Decimal(arithmetic_mean(data))}')
     print(f'Geometric: {Decimal(geometric_mean(data))}')
@@ -80,6 +85,7 @@ def execute_samples(data):
     print(f'Quantile 0.75: {Decimal(quantile(data, 0.75))}')
     print(f'Quantile 0.8: {Decimal(quantile(data, 0.8))}')
     print(f'IQR: {Decimal(iqr(data))}')
+    print(f'MAD: {Decimal(MAD(data))}')
 
 # Driver and test code
 data = [1, 2, 3, 4, 5, 6,7,8,9,10,11]
