@@ -62,10 +62,37 @@ def quantile(data, p):
 def iqr(data):
     return quantile(data, 0.75) - quantile(data, 0.25)
 
+# Calculate the median absolute deviation of a numeric list
 def MAD(data):
     median_data = median(data)
     distances = [abs(x_i - median_data) for x_i in data]
     return median(distances)
+
+# Calculate variance of a numeric list
+def variance(data):
+    n = len(data)
+    mean_data = arithmetic_mean(data)
+    return sum((x_i - mean_data) ** 2 for x_i in data) / (n - 1)
+
+# Calculate standard deviation of a numeric list
+def standard_deviation(data):
+    return sqrt(variance(data))
+
+# Calculate the covariance of two numeric lists
+def covariance(data1, data2):
+    if len(data1) != len(data2):
+        raise Exception('Lists must have the same length')
+    n = len(data1)
+    mean_data_1 = arithmetic_mean(data1)
+    mean_data_2 = arithmetic_mean(data2)
+    return sum((x_i - mean_data_1) * (y_i - mean_data_2) for x_i, y_i in zip(data1, data2)) / n
+
+# Calculate correlation of two numeric lists
+def correlation(data1, data2):
+    if len(data1) != len(data2):
+        raise Exception('Lists must have the same length')
+    return covariance(data1, data2) / (standard_deviation(data1) * standard_deviation(data2))
+
 
 def execute_samples(data):
     print(f'Arithmetic: {Decimal(arithmetic_mean(data))}')
@@ -86,9 +113,13 @@ def execute_samples(data):
     print(f'Quantile 0.8: {Decimal(quantile(data, 0.8))}')
     print(f'IQR: {Decimal(iqr(data))}')
     print(f'MAD: {Decimal(MAD(data))}')
+    print(f'Variance: {Decimal(variance(data))}')
+    print(f'Standard deviation: {Decimal(standard_deviation(data))}')
+    print(f'Covariance: {Decimal(covariance(data, data))}')
+    print(f'Correlation: {Decimal(correlation(data, data))}')
 
 # Driver and test code
-data = [1, 2, 3, 4, 5, 6,7,8,9,10,11]
+data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 data2 = [
     2.85,  3.19,  3.50,  3.69,  3.90,  4.14,  4.32,  4.50,  4.80,  5.20,
